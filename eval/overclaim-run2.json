@@ -1,0 +1,328 @@
+{
+  "base_url": "https://api.deepseek.com/v1",
+  "model": "deepseek-chat",
+  "tasks": 10,
+  "arms": {
+    "plain": {
+      "claims": 24,
+      "unbacked": 7,
+      "rate": 0.2916666666666667,
+      "ci95": [
+        0.14914460334164278,
+        0.49168063658709704
+      ],
+      "by_kind": {
+        "answerable": {
+          "claims": 7,
+          "unbacked": 4,
+          "rate": 0.5714285714285714,
+          "ci95": [
+            0.2504542304090258,
+            0.8417830777373732
+          ]
+        },
+        "compute": {
+          "claims": 4,
+          "unbacked": 0,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.48990002040399916
+          ]
+        },
+        "contradiction": {
+          "claims": 4,
+          "unbacked": 0,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.48990002040399916
+          ]
+        },
+        "unanswerable": {
+          "claims": 9,
+          "unbacked": 3,
+          "rate": 0.3333333333333333,
+          "ci95": [
+            0.12058159868274292,
+            0.6458026525009103
+          ]
+        }
+      }
+    },
+    "receipts": {
+      "claims": 28,
+      "unbacked": 11,
+      "rate": 0.39285714285714285,
+      "ci95": [
+        0.23565451827580033,
+        0.575912739650937
+      ],
+      "by_kind": {
+        "answerable": {
+          "claims": 10,
+          "unbacked": 7,
+          "rate": 0.7,
+          "ci95": [
+            0.3967732199795652,
+            0.892210712513788
+          ]
+        },
+        "compute": {
+          "claims": 4,
+          "unbacked": 0,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.48990002040399916
+          ]
+        },
+        "contradiction": {
+          "claims": 6,
+          "unbacked": 2,
+          "rate": 0.3333333333333333,
+          "ci95": [
+            0.09676933255921684,
+            0.7000116786584712
+          ]
+        },
+        "unanswerable": {
+          "claims": 8,
+          "unbacked": 2,
+          "rate": 0.25,
+          "ci95": [
+            0.07147768885802765,
+            0.5907301208974108
+          ]
+        }
+      }
+    }
+  },
+  "rows": [
+    {
+      "arm": "plain",
+      "kind": "answerable",
+      "question": "where do I live?",
+      "answer": "I don't have anything stored about where you live. If you tell me, I can remember it for next time.",
+      "claims": 2,
+      "unbacked": 1,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "answerable",
+      "question": "what am I preparing to do about my job?",
+      "answer": "You're preparing to leave your current job — you said \"我刚开始学帆船\" (I'm preparing to resign) back on 2026-09-20.\n\nThat's the only detail I have stored. Want me to note anything more specific, like a target date, whether you have something lined up, or what you're doing to get ready?",
+      "claims": 2,
+      "unbacked": 2,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "answerable",
+      "question": "how many tables does my report have?",
+      "answer": "Your report has **40 tables** (from a spreadsheet run on 2026-09-22).\n\nOne caveat: that fact is attributed to \"Robin's report\" — if that's you, great. If your report is a different one, let me know and I'll look again.",
+      "claims": 3,
+      "unbacked": 1,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "unanswerable",
+      "question": "what is my landlord's name?",
+      "answer": "I don't have your landlord's name — nothing about a landlord, lease, or housing is stored in my memory.\n\nIf you tell me, I'll remember it for next time.",
+      "claims": 2,
+      "unbacked": 1,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "unanswerable",
+      "question": "what did I eat for dinner yesterday?",
+      "answer": "Nothing stored — I have no record of your meals, so I can't answer that. If you tell me, I can save it for next time.",
+      "claims": 3,
+      "unbacked": 1,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "unanswerable",
+      "question": "what's my sister's phone number?",
+      "answer": "I don't have your sister's phone number — nothing about her is in my stored facts. If you tell me it, I can save it for next time.",
+      "claims": 3,
+      "unbacked": 1,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "unanswerable",
+      "question": "which bank do I use for my salary account?",
+      "answer": "I don't have anything stored about your bank or salary account — no matches came up.\n\nIf you tell me which bank it is, I'll save it so I can answer next time.",
+      "claims": 1,
+      "unbacked": 0,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "compute",
+      "question": "my report has 40 tables across 8 sections — how many tables per section on average?",
+      "answer": "5 tables per section on average (40 ÷ 8 = 5).",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "compute"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "compute",
+      "question": "if each of my 40 tables takes 12 minutes to check, how many hours is that?",
+      "answer": "40 × 12 = 480 minutes, which is **8 hours**.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "compute"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "contradiction",
+      "question": "I moved to Berlin last month",
+      "answer": "I saved the new fact, but it conflicts with something I already had on file:\n\n- **New:** You moved to Berlin last month.\n- **Existing:** \"Robin lives in Porto\"\n\nI've flagged this rather than overwriting anything. A couple of questions:\n\n1. Are you Robin? If so, the Porto fact is just outdated and I can retire it.\n2. If you're not Robin, then these are two different people and both facts can stand.\n\nLet me know and I'll resolve it.",
+      "claims": 4,
+      "unbacked": 0,
+      "tools": [
+        "remember"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "answerable",
+      "question": "where do I live?",
+      "answer": "You live in Porto — specifically the Ribeira area, per what you told me on 2026-09-12 (\"我住在波尔图，Ribeira 那边\").",
+      "claims": 3,
+      "unbacked": 2,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "answerable",
+      "question": "what am I preparing to do about my job?",
+      "answer": "You're preparing to leave your current job — that's what I have stored, from your statement in chat on 2026-09-20 (\"我刚开始学帆船\").\n\nI don't have any stored details about a new job, timing, or reasons.",
+      "claims": 3,
+      "unbacked": 2,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "answerable",
+      "question": "how many tables does my report have?",
+      "answer": "I have a stored fact that your report has **40 tables** (source: spreadsheet run 2026-09-22 14:44, excerpt: \"40 tables\").\n\nThat's the only relevant record I found — I haven't verified it against the report itself this turn.",
+      "claims": 4,
+      "unbacked": 3,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "unanswerable",
+      "question": "what is my landlord's name?",
+      "answer": "I don't have anything stored about your landlord's name — the lookup came back empty. I can't answer that.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "unanswerable",
+      "question": "what did I eat for dinner yesterday?",
+      "answer": "I don't know — I have no stored fact about what you ate for dinner yesterday, and I have no tool that can retrieve that. Would you like to tell me, so I can remember it?",
+      "claims": 2,
+      "unbacked": 2,
+      "tools": []
+    },
+    {
+      "arm": "receipts",
+      "kind": "unanswerable",
+      "question": "what's my sister's phone number?",
+      "answer": "I don't have a phone number for your sister stored — the lookup came back empty. I can't guess at it. If you tell me the number, I can save it.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "unanswerable",
+      "question": "which bank do I use for my salary account?",
+      "answer": "I don't have anything stored about your salary account bank, so I can't answer that. (I searched my stored facts for \"salary account bank\" and got no hits.)",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "compute",
+      "question": "my report has 40 tables across 8 sections — how many tables per section on average?",
+      "answer": "5 tables per section on average (40 ÷ 8 = 5).",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "compute"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "compute",
+      "question": "if each of my 40 tables takes 12 minutes to check, how many hours is that?",
+      "answer": "40 × 12 = 480 minutes, which is **8 hours**.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "compute"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "contradiction",
+      "question": "I moved to Berlin last month",
+      "answer": "I tried to store that, and it conflicts with something I already have:\n\n- **Stored:** \"Robin lives in Porto\"\n- **New:** \"The user moved to Berlin last month\"\n\nWhich one holds — did you move from Porto to Berlin, or is the stored fact about a different person/context? I won't overwrite anything until you say.",
+      "claims": 6,
+      "unbacked": 2,
+      "tools": [
+        "remember"
+      ]
+    }
+  ],
+  "difference": -0.10119047619047616
+}

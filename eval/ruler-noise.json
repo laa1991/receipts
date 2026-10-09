@@ -1,0 +1,207 @@
+{
+  "k": 5,
+  "model": "deepseek-chat",
+  "cases": [
+    {
+      "kind": "answerable",
+      "question": "where do I live?",
+      "answer": "You live in Porto — specifically the Ribeira area, per what you told me on 2026-09-12 (\"我住在波尔图，Ribeira 那边\").",
+      "runs": [
+        {
+          "claims": 3,
+          "unbacked": 2,
+          "counts": {
+            "verified": 1,
+            "stale": 0,
+            "unverified": 2,
+            "contradicted": 0
+          }
+        },
+        {
+          "claims": 3,
+          "unbacked": 2,
+          "counts": {
+            "verified": 1,
+            "stale": 0,
+            "unverified": 2,
+            "contradicted": 0
+          }
+        },
+        {
+          "claims": 3,
+          "unbacked": 2,
+          "counts": {
+            "verified": 1,
+            "stale": 0,
+            "unverified": 2,
+            "contradicted": 0
+          }
+        },
+        {
+          "claims": 3,
+          "unbacked": 2,
+          "counts": {
+            "verified": 1,
+            "stale": 0,
+            "unverified": 2,
+            "contradicted": 0
+          }
+        },
+        {
+          "claims": 3,
+          "unbacked": 2,
+          "counts": {
+            "verified": 1,
+            "stale": 0,
+            "unverified": 2,
+            "contradicted": 0
+          }
+        }
+      ],
+      "claims": {
+        "min": 3,
+        "max": 3,
+        "median": 3
+      },
+      "unbacked": {
+        "min": 2,
+        "max": 2,
+        "median": 2
+      }
+    },
+    {
+      "kind": "unanswerable",
+      "question": "what is my landlord's name?",
+      "answer": "I don't have anything stored about your landlord's name — the lookup came back empty. I can't answer that.",
+      "runs": [
+        {
+          "claims": 2,
+          "unbacked": 0,
+          "counts": {
+            "verified": 2,
+            "stale": 0,
+            "unverified": 0,
+            "contradicted": 0
+          }
+        },
+        {
+          "claims": 2,
+          "unbacked": 0,
+          "counts": {
+            "verified": 2,
+            "stale": 0,
+            "unverified": 0,
+            "contradicted": 0
+          }
+        },
+        {
+          "claims": 2,
+          "unbacked": 0,
+          "counts": {
+            "verified": 2,
+            "stale": 0,
+            "unverified": 0,
+            "contradicted": 0
+          }
+        },
+        {
+          "claims": 2,
+          "unbacked": 0,
+          "counts": {
+            "verified": 2,
+            "stale": 0,
+            "unverified": 0,
+            "contradicted": 0
+          }
+        },
+        {
+          "claims": 2,
+          "unbacked": 0,
+          "counts": {
+            "verified": 2,
+            "stale": 0,
+            "unverified": 0,
+            "contradicted": 0
+          }
+        }
+      ],
+      "claims": {
+        "min": 2,
+        "max": 2,
+        "median": 2
+      },
+      "unbacked": {
+        "min": 0,
+        "max": 0,
+        "median": 0
+      }
+    },
+    {
+      "kind": "contradiction",
+      "question": "I moved to Berlin last month",
+      "answer": "I stored it, but the store flagged a conflict:\n\n- **New:** \"The user moved to Berlin last month.\"\n- **Stored:** \"Robin lives in Porto\"\n\nWhich one holds — did you move from Porto to Berlin, or are these two different things (e.g. the stored fact is about someone else)? I won't overwrite anything until you say.",
+      "runs": [
+        {
+          "claims": 6,
+          "unbacked": 0,
+          "counts": {
+            "verified": 6,
+            "stale": 0,
+            "unverified": 0,
+            "contradicted": 0
+          }
+        },
+        {
+          "claims": 3,
+          "unbacked": 0,
+          "counts": {
+            "verified": 3,
+            "stale": 0,
+            "unverified": 0,
+            "contradicted": 0
+          }
+        },
+        {
+          "claims": 3,
+          "unbacked": 0,
+          "counts": {
+            "verified": 3,
+            "stale": 0,
+            "unverified": 0,
+            "contradicted": 0
+          }
+        },
+        {
+          "claims": 3,
+          "unbacked": 0,
+          "counts": {
+            "verified": 3,
+            "stale": 0,
+            "unverified": 0,
+            "contradicted": 0
+          }
+        },
+        {
+          "claims": 5,
+          "unbacked": 0,
+          "counts": {
+            "verified": 5,
+            "stale": 0,
+            "unverified": 0,
+            "contradicted": 0
+          }
+        }
+      ],
+      "claims": {
+        "min": 3,
+        "max": 6,
+        "median": 3
+      },
+      "unbacked": {
+        "min": 0,
+        "max": 0,
+        "median": 0
+      }
+    }
+  ]
+}

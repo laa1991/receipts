@@ -129,6 +129,9 @@ class Turn:
     answer: Answer
     tool_runs: list[ToolRun] = field(default_factory=list)
     steps: int = 0
+    # the evidence ledger as the extractor saw it — kept so the *ruler* can be re-run over
+    # the same answer (measuring the ruler's own noise without re-asking the model)
+    ledger: dict = field(default_factory=dict)
 
 
 # --- claim extraction -------------------------------------------------------------------
@@ -177,6 +180,7 @@ class Agent:
         extractor: Callable[[str, dict[str, Receipt]], list[dict]] | None = None,
         model_judge: bool = True,
         recent_window: int = 20,
+        system_prompt: str | None = None,
     ) -> None:
         self.client = client
         self.store = store
@@ -186,6 +190,9 @@ class Agent:
         self._extractor = extractor
         self._use_model_judge = model_judge
         self.recent_window = recent_window
+        # Overridable so the experiment (eval/overclaim.py) can run the same agent with and
+        # without the receipt discipline; the measurement then uses one shared ruler.
+        self.system_prompt = system_prompt or SYSTEM_PROMPT
 
     # --- tools --------------------------------------------------------------------------
 
@@ -328,7 +335,7 @@ class Agent:
     # --- the loop -----------------------------------------------------------------------
 
     def ask(self, question: str, history: Sequence[dict] | None = None) -> Turn:
-        messages: list[dict] = [{"role": "system", "content": SYSTEM_PROMPT}]
+        messages: list[dict] = [{"role": "system", "content": self.system_prompt}]
         messages += list(history or [])
         messages.append({"role": "user", "content": question})
 
@@ -352,7 +359,7 @@ class Agent:
         ledger = {f"e{i+1}": r.receipt for i, r in enumerate(runs)}
         claims = self._extract(text, ledger)
         answer = Answer(question=question, text=text, claims=claims)
-        return Turn(question=question, answer=answer, tool_runs=runs, steps=steps)
+        return Turn(question=question, answer=answer, tool_runs=runs, steps=steps, ledger=ledger)
 
     def _extract(self, text: str, ledger: dict[str, Receipt]) -> list[Claim]:
         if not text.strip():
