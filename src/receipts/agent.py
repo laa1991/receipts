@@ -43,6 +43,9 @@ Hard rules:
    and let the store decide. If it reports a conflict, tell the user both versions and ask
    which one holds. Never overwrite silently.
 4. Keep the answer short. Do not claim to have done something you did not do in this turn.
+5. Read tool results literally. A `remember` result also tells you what was compared: if it
+   says nothing overlapped to compare, you may NOT claim "there is no conflict" — say what
+   was checked and what was not.
 """
 
 TOOLS: list[dict] = [
@@ -147,6 +150,9 @@ Rules:
 - Split the answer into its distinct factual assertions. Opinions, questions and hedges are
   not claims.
 - An assertion with no supporting evidence gets an empty list. Do not invent support.
+- A receipt only supports what it actually did. A `remember` receipt reports that a fact was
+  stored and what it was compared against; it does NOT support a claim that no conflict exists
+  if the comparison found nothing to compare with.
 - If the answer contains no factual assertions, return {{"claims": []}}.
 """
 
@@ -169,7 +175,8 @@ class Agent:
         note_root: str | None = None,
         max_steps: int = 6,
         extractor: Callable[[str, dict[str, Receipt]], list[dict]] | None = None,
-        model_judge: bool = False,
+        model_judge: bool = True,
+        recent_window: int = 20,
     ) -> None:
         self.client = client
         self.store = store
@@ -178,6 +185,7 @@ class Agent:
         self.max_steps = max_steps
         self._extractor = extractor
         self._use_model_judge = model_judge
+        self.recent_window = recent_window
 
     # --- tools --------------------------------------------------------------------------
 
@@ -189,6 +197,8 @@ class Agent:
                 source_ref=args.get("source_ref"),
                 source_excerpt=args.get("excerpt"),
                 judge=self._judge if self._use_model_judge else None,
+                recent=self.recent_window if self._use_model_judge else 0,
+                batch_judge=self._judge_batch if self._use_model_judge else None,
             )
             if outcome == "conflict":
                 others = [{"id": o.id, "text": o.text} for o in self.store.conflicts_for(fact.id)]
@@ -209,7 +219,8 @@ class Agent:
             # a conflict is a truthful result, so `claim_says_success=False` keeps the
             # receipt usable while the JSON carries what actually happened.
             receipt = tool_receipt(f"remember({fact.id})", rc, result, claim_says_success=False)
-            receipt.note = f"remember → {run_outcome_text(outcome, fact)}"
+            receipt.note = (f"remember → {run_outcome_text(outcome, fact)} · "
+                            f"{check_text(self.store.last_check)}")
             receipt.verify_command = (
                 "python -m receipts.cli conflicts" if outcome == "conflict"
                 else f"python -m receipts.cli show {fact.id}"
@@ -284,6 +295,36 @@ class Agent:
                 return verdict
         return "unrelated"
 
+    def _judge_batch(self, candidates: list, incoming: str) -> list[str]:
+        """One call over the whole candidate pool: which existing facts cannot both be true?
+
+        Batched on purpose. The reason a recency window is needed at all is that lexical
+        overlap misses "I moved to Berlin" vs "Robin lives in Porto"; but judging that
+        window pair-by-pair would cost one round trip per fact on every `remember`.
+        """
+        listing = "\n".join(f"- {f.id}: {f.text}" for f in candidates)
+        prompt = (
+            "A new statement is about to be stored about a person.\n\n"
+            f"New statement: {incoming}\n\n"
+            f"Existing statements:\n{listing}\n\n"
+            "List the ids of existing statements that describe the SAME attribute about the "
+            "person with a DIFFERENT value — i.e. the new statement looks like an update of "
+            "them (an old home city vs a new home city; an old employer vs a new one).\n"
+            "Rules:\n"
+            "- Same attribute, different value ⇒ list the id, even if both could technically "
+            "be true at different times. The user has to confirm which one holds now.\n"
+            "- Different attribute, or a compatible detail (city vs district, job vs team) ⇒ "
+            "do not list it.\n"
+            "- Answer with the ids only, one per line. If none apply, answer exactly: NONE"
+        )
+        reply = self.client.chat([{"role": "user", "content": prompt}], temperature=0.0,
+                                 max_tokens=256)
+        text = reply.text or ""
+        wanted = set(re.findall(r"f_[0-9a-f]{6,}", text))
+        if not wanted:
+            return []
+        return [f.id for f in candidates if f.id in wanted]
+
     # --- the loop -----------------------------------------------------------------------
 
     def ask(self, question: str, history: Sequence[dict] | None = None) -> Turn:
@@ -357,6 +398,29 @@ def run_outcome_text(outcome: str, fact) -> str:
         return f"already had this fact ({fact.id}); nothing was added"
     return (f"CONFLICT — both versions are kept ({fact.id} and the earlier one) "
             f"and the question is yours to settle")
+
+
+def check_text(check: dict) -> str:
+    """Plain-language account of what a `remember` actually compared.
+
+    This exists because the first live run produced a *false* "no conflict" claim: the receipt
+    said "stored a new fact" and the sentence built on it said "nothing conflicts". A receipt
+    must therefore carry the check itself — including the case where nothing was compared.
+    """
+    n = int(check.get("candidates", 0))
+    checker = check.get("checker", "none")
+    verdicts = check.get("verdicts", [])
+    if checker == "none" or n == 0:
+        return ("nothing in memory overlapped enough to compare — this is NOT a "
+                "no-conflict check")
+    parts = []
+    if check.get("lexical"):
+        parts.append(f"{check['lexical']} by word overlap")
+    if check.get("recent"):
+        parts.append(f"{check['recent']} from the recency window")
+    detail = ", ".join(f"{cid}:{v}" for cid, v in verdicts)
+    return (f"compared {n} existing fact(s) ({' + '.join(parts) or 'pool'}) "
+            f"via {checker} [{detail}]")
 
 
 def _assistant_tool_message(reply: Reply) -> dict:

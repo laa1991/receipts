@@ -150,6 +150,10 @@ class Store:
         self.db.row_factory = sqlite3.Row
         self.db.executescript(_SCHEMA)
         self.db.commit()
+        # What the *last* add_fact actually compared. Receipts must report the check that was
+        # performed, not merely that something was stored — "nothing overlapped to compare"
+        # is not evidence that no conflict exists.
+        self.last_check: dict = {"candidates": 0, "checker": "none", "verdicts": []}
 
     # --- events -------------------------------------------------------------------------
 
@@ -181,6 +185,8 @@ class Store:
         judge: Callable[[str, str], str] | None = None,
         min_shared: int = 3,
         ratio: float = 0.6,
+        recent: int = 0,
+        batch_judge: Callable[[list["Fact"], str], list[str]] | None = None,
     ) -> tuple[Fact, str]:
         """Store a fact. Returns ``(fact, outcome)`` where outcome is one of:
 
@@ -192,7 +198,41 @@ class Store:
         if not (text or "").strip():
             raise ValueError("refusing to store an empty fact")
 
-        candidates = self._candidates(text, min_shared=min_shared)
+        lexical = self._candidates(text, min_shared=min_shared)
+
+        # Lexical overlap alone misses the case that matters most: "I moved to Berlin" shares
+        # no words with "Robin lives in Porto", yet they cannot both hold. So the pool also
+        # carries a recency window, and the whole pool goes to one batched judge call.
+        recent_pool: list[Fact] = []
+        if recent > 0:
+            seen = {c.id for c in lexical}
+            active = [f for f in self.facts(ACTIVE) if f.id not in seen]
+            active.sort(key=lambda f: f.created_at, reverse=True)
+            recent_pool = active[:recent]
+
+        candidates = lexical + recent_pool
+        checker = "none" if not candidates else (
+            "model_batch" if batch_judge is not None else ("model" if judge is not None else "heuristic"))
+        verdicts: list[tuple[str, str]] = []
+        # same list object ⇒ callers holding last_check see the verdicts appended below
+        self.last_check = {"candidates": len(candidates), "lexical": len(lexical),
+                           "recent": len(recent_pool), "checker": checker, "verdicts": verdicts}
+
+        if batch_judge is not None and candidates:
+            contradicted = set(batch_judge(candidates, text))
+            for cand in candidates:
+                verdicts.append((cand.id, "contradict" if cand.id in contradicted else "ok"))
+            winner = next((c for c in candidates if c.id in contradicted), None)
+            if winner is not None:
+                return self._raise_conflict(winner, text, source_kind, source_ref,
+                                            source_excerpt, falsifier, tags)
+            fact = self._insert(text, source_kind, source_ref, source_excerpt, falsifier, tags)
+            self._log("fact.added", fact.id, {"text": text, "source_kind": source_kind,
+                                              "source_ref": source_ref,
+                                              "compared": len(candidates)})
+            self.db.commit()
+            return fact, "added"
+
         for cand in candidates:
             same_ratio, shared = overlap(text, cand.text)
             verdict = None
@@ -200,6 +240,7 @@ class Store:
                 verdict = judge(cand.text, text)
             elif same_ratio >= ratio and shared >= min_shared:
                 verdict = "same"
+            verdicts.append((cand.id, verdict or "unrelated"))
             if verdict == "same":
                 self._log("fact.duplicate", cand.id, {"incoming": text})
                 self.db.commit()

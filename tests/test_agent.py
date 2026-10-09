@@ -56,10 +56,11 @@ def test_a_contradiction_is_reported_and_nothing_is_overwritten(store):
     old, _ = store.add_fact("Robin lives in Porto", source_kind="user_statement")
     client = MockClient([
         tool_reply("remember", text="Robin lives in Berlin", excerpt="我搬到北京了"),
-        Reply(text="contradict"),                       # the judge call
         Reply(text="You've told me two different things."),
     ])
-    agent = Agent(client, store, model_judge=True)
+    agent = Agent(client, store)
+    # the batched judge is what decides; stub it so the test stays deterministic
+    agent._judge_batch = lambda candidates, incoming: [c.id for c in candidates][:1]
     turn = agent.ask("I moved to Berlin")
 
     run = turn.tool_runs[0]
@@ -68,6 +69,28 @@ def test_a_contradiction_is_reported_and_nothing_is_overwritten(store):
     assert store.get(old.id).text == "Robin lives in Porto"
     assert store.get(old.id).status == DISPUTED
     assert len(store.conflicts()) == 1
+    # and the receipt records what was compared, not merely that something happened
+    assert "compared 1 existing fact" in run.receipt.note
+
+
+def test_the_recency_window_is_what_catches_unrelated_wording(store):
+    """A paraphrase shares no words with the stored fact — the pool must still contain it,
+    or the judge never gets to see the pair. (The first version of this test used
+    'Robin lives in Berlin', which shares ann/lives/in with the stored fact and so never
+    exercised the recency window at all.)"""
+    store.add_fact("Robin lives in Porto", source_kind="user_statement")
+    seen = {}
+
+    def batch(candidates, incoming):
+        seen["texts"] = [c.text for c in candidates]
+        return []
+
+    store.add_fact("User relocated to the capital.", source_kind="user_statement",
+                   recent=20, batch_judge=batch)
+    assert store.last_check["lexical"] == 0, "this test is only meaningful with no lexical hit"
+    assert "Robin lives in Porto" in seen["texts"]
+    assert store.last_check["recent"] == 1
+    assert store.last_check["checker"] == "model_batch"
 
 
 def test_a_failed_computation_cannot_back_a_number(store):
