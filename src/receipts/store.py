@@ -146,7 +146,11 @@ class Store:
         self.path = str(path)
         if self.path != ":memory:":
             Path(self.path).parent.mkdir(parents=True, exist_ok=True)
-        self.db = sqlite3.connect(self.path)
+        # check_same_thread=False: the demo web app serves requests from a threadpool, and
+        # sqlite3 otherwise refuses a connection used off its creating thread. Safe here
+        # because a demo session is single-user; a real deployment wants one connection per
+        # request (or an explicit lock).
+        self.db = sqlite3.connect(self.path, check_same_thread=False)
         self.db.row_factory = sqlite3.Row
         self.db.executescript(_SCHEMA)
         self.db.commit()
