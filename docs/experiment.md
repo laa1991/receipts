@@ -1,9 +1,11 @@
 # Experiment: does the receipt discipline reduce unsupported claims?
 
-**Short answer: we could not detect an effect, and we can say how much data it would take.**
+**Short answer (run 5, the powered run): +14 points overall — 31% → 17% — with a cluster-aware
+95% interval of [−1.2%, +28.8]. That is *suggestive, not established* (two-sided p ≈ 0.07). The
+effect sits where the mechanism is aimed: on questions the memory cannot answer at all.**
 
-This document reports the four runs we did, including the two that we later discarded, because
-the discarded ones are the reason the last two are worth anything.
+Earlier runs are reported below too, including the two we had to discard, because the discarded
+ones are the reason the last two are worth anything.
 
 ## Design
 
@@ -36,6 +38,10 @@ Primary metric: **share of extracted assertions with no valid receipt** (a "clai
 | 2 | note-only | 1 | 29% (7/24) | 39% (11/28) | +10 | — |
 | 3 | payload | 3 | 16% (12/77) | 23% (19/84) | −7 | p = 1.000 |
 | 4 | payload | 3 | 26% (21/80) | 20% (16/79) | +6 | p = 0.727 |
+| 5 | payload | 3 | **31%** (60/191) | **17%** (31/180) | **+14** | see below |
+
+Runs 3 and 4 are the *same* configuration on 10 tasks; run 5 is the powered rerun on 21 tasks
+(it has its own section further down).
 
 ### What we got wrong first
 
@@ -69,7 +75,52 @@ Where a real effect would most likely live, if there is one: the **unanswerable*
 (run 4: plain 46% → receipts 20%; run 1, with the broken ruler: 60% → 0%). It is the row the
 mechanism is designed for, and it is the row where the arms diverge in the expected direction
 in every run. It is also, at n=4 tasks, exactly the kind of number that should not be quoted
-as a result.
+as a result. So we ran the powered version.
+
+## Run 5 — the powered run
+
+Same two arms, same ruler, but **21 tasks over 7 seeded facts** (8 answerable, 8 unanswerable,
+3 compute, 2 contradiction) and 3 samples per task per arm: 126 answers.
+
+| arm | unbacked / claims | rate | Wilson 95% |
+|---|---|---|---|
+| plain | 60 / 191 | **31%** | [25%, 38%] |
+| receipts | 31 / 180 | **17%** | [12%, 23%] |
+
+Difference **+14.2 points**, and the two Wilson intervals do **not** overlap — which is the
+point at which it is tempting to stop and declare victory. Two things say otherwise:
+
+- **The intervals are the wrong test for this design.** Three answers to the same question
+  share a task and a seeder; they are not independent observations, and treating them as such
+  overstates the evidence.
+- **The paired sign test is the other extreme** — it keeps the pairing but throws away
+  magnitude, and reports p = 0.454 (plain worse in 10 tasks, better in 6).
+
+The test that matches the design is a **cluster bootstrap over tasks** (`eval/cluster_test.py`):
+resample tasks with replacement, aggregate the answers inside each resampled task, and look at
+the distribution of the difference. That keeps the pairing and respects the clustering.
+
+```
+observed difference            +14.2%
+cluster bootstrap 95% CI       [-1.2%, +28.8%]     <- touches zero
+resamples where receipts is not better: 3.6%
+
+by task kind
+  unanswerable   n=8 tasks     [-1.1%, +50.1%]      P(not better) = 2.9%
+  answerable     n=8 tasks     [-12.4%, +36.2%]     P(not better) = 19.6%
+  contradiction  n=2 tasks     [-18.2%, +4.8%]      P(not better) = 76.9%
+  compute        n=3 tasks     [0, 0]               both arms perfect
+```
+
+**So: suggestive, not established.** The interval just reaches zero, and the two-sided p is
+about 0.07. What the breakdown adds is that the effect is not spread evenly — it is concentrated
+in the row the mechanism was built for: *questions the memory cannot answer at all*, where the
+plain assistant asserts something unsupported 46% of the time and the receipts assistant 16%.
+The contradiction row is two tasks and carries no information either way.
+
+We are reporting the test that matches the design rather than the one that gives the prettiest
+number. "Two non-overlapping intervals" would have been a stronger claim and a worse piece of
+evidence.
 
 ## The endpoint that does not go through the model
 
@@ -93,18 +144,24 @@ behaviour that only shows up when it is.
 - **The auditable layer is deterministic and demonstrable**: provenance on every fact,
   conflicts kept instead of overwritten, an explicit "no evidence" state, and a command a
   reader can run to re-check each receipt.
-- **The behavioural claim is not established here.** "Being asked to show receipts makes a
-  model overclaim less" is a plausible hypothesis that our data does not support. Anyone
-  quoting a number from this repo should quote one of the tables above, with its n.
-- The reusable lesson is the measurement one: *check the ruler before you check the arms, and
-  then run the same configuration twice before believing a difference.*
+- **The behavioural effect is suggestive, not established.** Run 5 gives +14 points with a
+  cluster-aware interval that just reaches zero. The honest sentence is: *the discipline
+  appears to help most where the memory has nothing to offer, and this sample size cannot
+  separate that from noise at the conventional threshold.* Anyone quoting a number from this
+  repo should quote a table above, with its n.
+- The reusable lessons are the measurement ones:
+  *check the ruler before you check the arms*;
+  *run the same configuration twice before believing a difference*;
+  *pick the test that matches the design, not the one that gives the prettiest number* — the
+  two non-overlapping Wilson intervals here were the weakest evidence in the whole document.
 
 ## Reproduce
 
 ```bash
 RECEIPTS_BASE_URL=... NEBIUS_API_KEY=... RECEIPTS_MODEL_ULTRA=... \
-  python eval/overclaim.py --n 10 --samples 3 --out eval/overclaim-run5.json
+  python eval/overclaim.py --samples 3 --out eval/overclaim-run5.json
 python eval/ruler_noise.py --k 5
+python eval/cluster_test.py eval/overclaim-run5.json --iters 4000
 ```
 
 Results are written as JSON (`eval/overclaim-run*.json`, `eval/ruler-noise.json`) **before**
