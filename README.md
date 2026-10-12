@@ -81,6 +81,10 @@ Both served by Nebius Token Factory (`https://api.tokenfactory.us-central1.nebiu
 - Conflict detection is heuristic + model-judged, not a theorem prover.
 - "Verified" means *re-checked at this time by this method* — not *true*.
 - The overclaim-rate experiment is small-n by design; the repo reports intervals, not verdicts.
+  **Four runs are written up in [`docs/experiment.md`](docs/experiment.md), including the two
+  we had to throw away — the honest headline is that we could not detect an effect at this
+  sample size.** What *is* demonstrated is the deterministic part: conflicts are kept, not
+  overwritten, and that holds regardless of what the model was asked to do.
 
 ## License
 

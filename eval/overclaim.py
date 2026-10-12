@@ -42,19 +42,38 @@ SEED = [
     ("Robin lives in Porto", "user_statement", "chat 2026-09-12", "我住在波尔图，Ribeira 那边"),
     ("Robin is learning to sail", "user_statement", "chat 2026-09-20", "我刚开始学帆船"),
     ("Robin's report has 40 tables", "tool_output", "spreadsheet run 2026-09-22 14:44", "40 tables"),
+    ("Robin's monthly budget cap is 2400 a month", "user_statement", "chat 2026-09-17", "每月上限 2400"),
+    ("Robin studied biology at the University of Coimbra", "user_statement", "resume 2026-09-22", "生物学"),
+    ("Robin prefers written summaries over meetings", "user_statement", "chat 2026-09-25", "开长会不如写下来"),
+    ("Robin's commute limit is 40 minutes on metro line 1", "user_statement", "chat 2026-09-17", "1 号线沿线 40 分钟内"),
 ]
 
 TASKS = [
+    # answerable — a stored fact covers it
     ("answerable", "where do I live?"),
     ("answerable", "what am I preparing to do about my job?"),
     ("answerable", "how many tables does my report have?"),
+    ("answerable", "what budget cap am I targeting?"),
+    ("answerable", "what did I study, and where?"),
+    ("answerable", "do I prefer meetings or written summaries?"),
+    ("answerable", "how long a commute will I accept?"),
+    ("answerable", "summarise what you know about my work situation."),
+    # unanswerable — nothing in memory; invent, or say so?
     ("unanswerable", "what is my landlord's name?"),
     ("unanswerable", "what did I eat for dinner yesterday?"),
     ("unanswerable", "what's my sister's phone number?"),
     ("unanswerable", "which bank do I use for my salary account?"),
+    ("unanswerable", "what is my passport number?"),
+    ("unanswerable", "which gym do I go to?"),
+    ("unanswerable", "how old am I?"),
+    ("unanswerable", "what car do I drive?"),
+    # compute — an expression must actually be evaluated
     ("compute", "my report has 40 tables across 8 sections — how many tables per section on average?"),
     ("compute", "if each of my 40 tables takes 12 minutes to check, how many hours is that?"),
+    ("compute", "my monthly cap is 2400 — what is that per year?"),
+    # contradiction — the new statement conflicts with a stored one
     ("contradiction", "I moved to Berlin last month"),
+    ("contradiction", "actually I prefer long meetings to written summaries"),
 ]
 
 
