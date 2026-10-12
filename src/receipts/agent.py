@@ -152,6 +152,9 @@ Return JSON only:
 Rules:
 - Split the answer into its distinct factual assertions. Opinions, questions and hedges are
   not claims.
+- A sentence IS supported when the evidence payload entails it — a date, a verbatim excerpt
+  or a number that appears in the payload counts as support. Read the payload, not just the
+  one-line summary.
 - An assertion with no supporting evidence gets an empty list. Do not invent support.
 - A receipt only supports what it actually did. A `remember` receipt reports that a fact was
   stored and what it was compared against; it does NOT support a claim that no conflict exists
@@ -367,8 +370,13 @@ class Agent:
         if self._extractor is not None:
             raw = self._extractor(text, ledger)
         else:
+            # The evidence *payload* matters, not just the note: a fact receipt carries the
+            # verbatim excerpt and the source ref, and a sentence like "you told me on
+            # 2026-09-12 that you live in Ribeira" IS supported by them. Leaving the payload
+            # out made the ruler score such sentences unbacked — a systematic (not noisy)
+            # flaw that inflated BOTH arms of the experiment.
             ledger_text = "\n".join(
-                f"{eid}: [{r.kind}/{r.status}] {r.note}" for eid, r in ledger.items()
+                _render_receipt(eid, r) for eid, r in ledger.items()
             ) or "(no evidence gathered this turn)"
             reply = self.client.chat(
                 [{"role": "user", "content": CLAIM_PROMPT.format(answer=text, ledger=ledger_text)}],
@@ -395,6 +403,14 @@ def _combine(receipts: list[Receipt], fallback: Receipt) -> Receipt:
         return fallback
     order = {"contradicted": 3, "unverified": 2, "stale": 1, "verified": 0}
     return max(receipts, key=lambda r: order[r.status])
+
+
+def _render_receipt(eid: str, r: Receipt, limit: int = 400) -> str:
+    """One ledger line for the ruler: the summary *and* the raw evidence it is based on."""
+    payload = json.dumps(r.evidence, ensure_ascii=False)
+    if len(payload) > limit:
+        payload = payload[:limit] + "…"
+    return f"{eid}: [{r.kind}/{r.status}] {r.note}\n    evidence: {payload}"
 
 
 def run_outcome_text(outcome: str, fact) -> str:

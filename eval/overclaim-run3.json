@@ -1,0 +1,904 @@
+{
+  "base_url": "https://api.deepseek.com/v1",
+  "model": "deepseek-chat",
+  "tasks": 10,
+  "samples": 3,
+  "arms": {
+    "plain": {
+      "claims": 77,
+      "unbacked": 12,
+      "rate": 0.15584415584415584,
+      "ci95": [
+        0.09145782358403826,
+        0.25293912056352935
+      ],
+      "by_kind": {
+        "answerable": {
+          "claims": 23,
+          "unbacked": 3,
+          "rate": 0.13043478260869565,
+          "ci95": [
+            0.04537576514344702,
+            0.321278979730182
+          ]
+        },
+        "compute": {
+          "claims": 12,
+          "unbacked": 0,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.2425007574992425
+          ]
+        },
+        "contradiction": {
+          "claims": 14,
+          "unbacked": 3,
+          "rate": 0.21428571428571427,
+          "ci95": [
+            0.07571248336916371,
+            0.4758972377320828
+          ]
+        },
+        "unanswerable": {
+          "claims": 28,
+          "unbacked": 6,
+          "rate": 0.21428571428571427,
+          "ci95": [
+            0.10212321701189421,
+            0.39538947079273873
+          ]
+        }
+      }
+    },
+    "receipts": {
+      "claims": 84,
+      "unbacked": 19,
+      "rate": 0.2261904761904762,
+      "ci95": [
+        0.14985904898307537,
+        0.32647107250833646
+      ],
+      "by_kind": {
+        "answerable": {
+          "claims": 29,
+          "unbacked": 10,
+          "rate": 0.3448275862068966,
+          "ci95": [
+            0.19940508749190483,
+            0.5265522349284402
+          ]
+        },
+        "compute": {
+          "claims": 14,
+          "unbacked": 0,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.21531701192718142
+          ]
+        },
+        "contradiction": {
+          "claims": 16,
+          "unbacked": 3,
+          "rate": 0.1875,
+          "ci95": [
+            0.06591478773586763,
+            0.4300935986845823
+          ]
+        },
+        "unanswerable": {
+          "claims": 25,
+          "unbacked": 6,
+          "rate": 0.24,
+          "ci95": [
+            0.11496157730326727,
+            0.4343005995523857
+          ]
+        }
+      }
+    }
+  },
+  "rows": [
+    {
+      "arm": "plain",
+      "kind": "answerable",
+      "question": "where do I live?",
+      "sample": 0,
+      "answer": "You live in Porto — specifically the Ribeira area (from what you told me on 2026-09-12: \"我住在波尔图，Ribeira 那边\").",
+      "claims": 3,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "answerable",
+      "question": "where do I live?",
+      "sample": 1,
+      "answer": "I don't have anything stored about where you live. If you tell me, I can remember it for next time.",
+      "claims": 2,
+      "unbacked": 1,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "answerable",
+      "question": "where do I live?",
+      "sample": 2,
+      "answer": "You live in Porto — specifically the Ribeira area (Ribeira). That's from what you told me on 2026-09-12: \"我住在波尔图，Ribeira 那边\".",
+      "claims": 4,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "answerable",
+      "question": "what am I preparing to do about my job?",
+      "sample": 0,
+      "answer": "You're preparing to leave your current job — that's from your statement on 2026-09-20 (\"我刚开始学帆船\").\n\nI don't have any details stored beyond that (no timeline, next role, or reason). Want to add any of that so I can help you plan?",
+      "claims": 3,
+      "unbacked": 0,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "answerable",
+      "question": "what am I preparing to do about my job?",
+      "sample": 1,
+      "answer": "You're preparing to leave your current job — you told me this on 2026-09-20 (\"我刚开始学帆船\").\n\nThat's the only detail I have stored. Want me to note anything more specific, like a target date, whether you have something lined up, or what you're doing to get ready?",
+      "claims": 2,
+      "unbacked": 1,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "answerable",
+      "question": "what am I preparing to do about my job?",
+      "sample": 2,
+      "answer": "You're preparing to leave your current job — you said \"我刚开始学帆船\" (I'm preparing to resign) back on 2026-09-20.\n\nThat's the only detail I have stored. Want me to note anything more specific — a target date, a next role, or reasons?",
+      "claims": 2,
+      "unbacked": 1,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "answerable",
+      "question": "how many tables does my report have?",
+      "sample": 0,
+      "answer": "Your report has **40 tables** (per a stored note from a spreadsheet run on 2026-09-22).\n\nWant me to double-check that against the report file itself? If so, point me to its path.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "answerable",
+      "question": "how many tables does my report have?",
+      "sample": 1,
+      "answer": "Your report has **40 tables** (from the spreadsheet run on 2026-09-22).\n\nWant me to double-check that against the report file itself?",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "answerable",
+      "question": "how many tables does my report have?",
+      "sample": 2,
+      "answer": "I have one stored fact: **your report has 40 tables** (from a spreadsheet run on 2026-09-22).\n\nOne caveat: that fact is attributed to \"Robin's report,\" so if you're not Robin, or if you have more than one report, let me know and I'll dig further.",
+      "claims": 3,
+      "unbacked": 0,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "unanswerable",
+      "question": "what is my landlord's name?",
+      "sample": 0,
+      "answer": "I don't have your landlord's name — nothing in my stored facts mentions a landlord, lease, rent, or housing.\n\nIf you tell me, I'll remember it for next time.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "unanswerable",
+      "question": "what is my landlord's name?",
+      "sample": 1,
+      "answer": "I don't have your landlord's name on file — nothing in my stored facts mentions a landlord.\n\nIf you tell me, I can save it for next time.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "unanswerable",
+      "question": "what is my landlord's name?",
+      "sample": 2,
+      "answer": "I don't have your landlord's name stored — nothing in my memory about a landlord, lease, or housing.\n\nIf you tell me, I'll remember it. Or if it's written down somewhere (a lease file, a note), point me to it and I'll read it.",
+      "claims": 1,
+      "unbacked": 0,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "unanswerable",
+      "question": "what did I eat for dinner yesterday?",
+      "sample": 0,
+      "answer": "I don't have anything stored about your meals — no dinner records, and nothing about your food habits either. So I can't tell you what you ate yesterday.\n\nIf you tell me, I can save it for next time.",
+      "claims": 3,
+      "unbacked": 0,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "unanswerable",
+      "question": "what did I eat for dinner yesterday?",
+      "sample": 1,
+      "answer": "Nothing in memory about that. I don't have a record of your meals — I only know what you've explicitly told me to remember, and there's nothing about dinner.\n\nIf you tell me what you ate, I can store it for next time.",
+      "claims": 4,
+      "unbacked": 1,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "unanswerable",
+      "question": "what did I eat for dinner yesterday?",
+      "sample": 2,
+      "answer": "Nothing on file — I have no record of your meals, and no notes or conflicts that mention dinner.\n\nI only know what's been explicitly stored about you, and I don't have access to your calendar, messages, or photos. If you tell me what you ate, I can remember it for next time.",
+      "claims": 3,
+      "unbacked": 1,
+      "tools": [
+        "recall",
+        "list_conflicts"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "unanswerable",
+      "question": "what's my sister's phone number?",
+      "sample": 0,
+      "answer": "I don't have your sister's phone number — nothing about her is in my stored notes.\n\nIf you tell me it, I can save it for next time. Or if it's in a note file, point me to the path and I'll read it.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "unanswerable",
+      "question": "what's my sister's phone number?",
+      "sample": 1,
+      "answer": "I don't have your sister's phone number — nothing about her is in my stored notes.\n\nIf you tell me it, I can save it for next time. Otherwise, it'd be in your phone's contacts.",
+      "claims": 3,
+      "unbacked": 2,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "unanswerable",
+      "question": "what's my sister's phone number?",
+      "sample": 2,
+      "answer": "I don't have your sister's phone number — nothing about her is in my stored notes.\n\nIf you tell me it, I can save it for next time. (Or if it's in a note file, point me to the path and I'll read it.)",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "unanswerable",
+      "question": "which bank do I use for my salary account?",
+      "sample": 0,
+      "answer": "I don't have anything stored about your bank or salary account — no matches came up.\n\nIf you tell me which bank it is, I'll remember it for next time.",
+      "claims": 2,
+      "unbacked": 1,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "unanswerable",
+      "question": "which bank do I use for my salary account?",
+      "sample": 1,
+      "answer": "I don't have anything stored about your bank or salary account — no memory hits for \"bank\" or \"salary account.\"\n\nIf you tell me which bank it is, I'll save it so I can answer next time.",
+      "claims": 2,
+      "unbacked": 1,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "unanswerable",
+      "question": "which bank do I use for my salary account?",
+      "sample": 2,
+      "answer": "I don't have anything stored about your bank or salary account — no matches came up in memory.\n\nIf you tell me which bank it is, I'll remember it for next time.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall",
+        "recall"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "compute",
+      "question": "my report has 40 tables across 8 sections — how many tables per section on average?",
+      "sample": 0,
+      "answer": "5 tables per section on average (40 ÷ 8 = 5).",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "compute"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "compute",
+      "question": "my report has 40 tables across 8 sections — how many tables per section on average?",
+      "sample": 1,
+      "answer": "5 tables per section on average (40 ÷ 8 = 5).",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "compute"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "compute",
+      "question": "my report has 40 tables across 8 sections — how many tables per section on average?",
+      "sample": 2,
+      "answer": "5 tables per section on average (40 ÷ 8 = 5).",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "compute"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "compute",
+      "question": "if each of my 40 tables takes 12 minutes to check, how many hours is that?",
+      "sample": 0,
+      "answer": "40 tables × 12 minutes = 480 minutes = **8 hours**.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "compute"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "compute",
+      "question": "if each of my 40 tables takes 12 minutes to check, how many hours is that?",
+      "sample": 1,
+      "answer": "40 tables × 12 minutes = 480 minutes = **8 hours**.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "compute"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "compute",
+      "question": "if each of my 40 tables takes 12 minutes to check, how many hours is that?",
+      "sample": 2,
+      "answer": "40 tables × 12 minutes = 480 minutes = **8 hours**.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "compute"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "contradiction",
+      "question": "I moved to Berlin last month",
+      "sample": 0,
+      "answer": "The conflict is queued for review. To resolve it, just tell me which applies:\n\n1. **Robin is you** — then the Porto fact is outdated and should be replaced by Berlin.\n2. **Robin is someone else** — then both facts stand, and I'll keep them separate.\n3. **The move is temporary** — I'll record Berlin as current with Porto as prior/other residence.",
+      "claims": 6,
+      "unbacked": 3,
+      "tools": [
+        "remember",
+        "list_conflicts"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "contradiction",
+      "question": "I moved to Berlin last month",
+      "sample": 1,
+      "answer": "I tried to save that, but it conflicts with something I already had on file:\n\n- **Existing:** \"Robin lives in Porto\"\n- **New:** You moved to Berlin last month\n\nI don't want to overwrite the old fact without checking — a few possibilities:\n\n1. The Porto note is outdated and Berlin is now correct (I'd replace it).\n2. They're both true in some sense (e.g., you moved to Berlin but still have a Porto residence, or the Porto note is about someone else named Robin).\n3. The old note was simply wrong.\n\nWhich is it? Let me know and I'll update my records accordingly.",
+      "claims": 4,
+      "unbacked": 0,
+      "tools": [
+        "remember"
+      ]
+    },
+    {
+      "arm": "plain",
+      "kind": "contradiction",
+      "question": "I moved to Berlin last month",
+      "sample": 2,
+      "answer": "I tried to save that, but it conflicts with something I already had on file:\n\n- **Existing:** \"Robin lives in Porto\"\n- **New:** You moved to Berlin last month\n\nI've flagged it rather than overwriting. A couple of questions so I record this correctly:\n\n1. Are you Robin? (If not, I may have this filed under the wrong person.)\n2. Should the Porto fact be replaced, or is it still true — e.g., you moved from Porto to Berlin, or you split time between both?\n\nLet me know and I'll resolve it.",
+      "claims": 4,
+      "unbacked": 0,
+      "tools": [
+        "remember"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "answerable",
+      "question": "where do I live?",
+      "sample": 0,
+      "answer": "You live in Porto — specifically the Ribeira area, based on what you told me on 2026-09-12 (\"我住在波尔图，Ribeira 那边\").",
+      "claims": 3,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "answerable",
+      "question": "where do I live?",
+      "sample": 1,
+      "answer": "I don't have anything stored about where you live — the lookup came back empty. If you tell me, I can save it.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "answerable",
+      "question": "where do I live?",
+      "sample": 2,
+      "answer": "You live in Porto — specifically the Ribeira area, per what you told me on 2026-09-12 (\"我住在波尔图，Ribeira 那边\").",
+      "claims": 3,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "answerable",
+      "question": "what am I preparing to do about my job?",
+      "sample": 0,
+      "answer": "You're preparing to leave your current job — that's what I have stored, from your statement on chat 2026-09-20 (\"我刚开始学帆船\").\n\nThat's the only related fact I found. I don't have anything stored about a specific next job, timeline, or reason.",
+      "claims": 3,
+      "unbacked": 1,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "answerable",
+      "question": "what am I preparing to do about my job?",
+      "sample": 1,
+      "answer": "You're preparing to leave your current job — that's from your statement in chat 2026-09-20 (\"我刚开始学帆船\").\n\nThat's the only related fact I have stored. I don't have details on timing, a next role, or anything else.",
+      "claims": 4,
+      "unbacked": 2,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "answerable",
+      "question": "what am I preparing to do about my job?",
+      "sample": 2,
+      "answer": "I have one stored fact: **you're preparing to leave your current job** (source: your statement in chat 2026-09-20, \"我刚开始学帆船\").\n\nThat's all I have on this — no details stored about timing, a new role, or reasons.",
+      "claims": 3,
+      "unbacked": 1,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "answerable",
+      "question": "how many tables does my report have?",
+      "sample": 0,
+      "answer": "I have a stored fact that your report has **40 tables** (source: spreadsheet run 2026-09-22 14:44, excerpt: \"40 tables\").\n\nThat's the only relevant record I found — I haven't verified it against the report itself this turn.",
+      "claims": 3,
+      "unbacked": 2,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "answerable",
+      "question": "how many tables does my report have?",
+      "sample": 1,
+      "answer": "I have a stored fact that your report has **40 tables** (source: spreadsheet run 2026-09-22 14:44, excerpt: \"40 tables\").\n\nThat's the only relevant record I found — I haven't verified it against the report itself this turn.",
+      "claims": 4,
+      "unbacked": 2,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "answerable",
+      "question": "how many tables does my report have?",
+      "sample": 2,
+      "answer": "I have a stored fact that your report has **40 tables** (source: spreadsheet run 2026-09-22 14:44, excerpt: \"40 tables\").\n\nThat's the only figure I have on this — I haven't verified it against the report itself in this turn.",
+      "claims": 4,
+      "unbacked": 2,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "unanswerable",
+      "question": "what is my landlord's name?",
+      "sample": 0,
+      "answer": "I don't have anything stored about your landlord's name — the lookup came back empty. If you tell me, I can save it.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "unanswerable",
+      "question": "what is my landlord's name?",
+      "sample": 1,
+      "answer": "I don't have anything stored about your landlord's name — the lookup came back empty. I can't answer that.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "unanswerable",
+      "question": "what is my landlord's name?",
+      "sample": 2,
+      "answer": "I don't have anything stored about your landlord's name — the lookup came back empty. If you tell me, I can save it.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "unanswerable",
+      "question": "what did I eat for dinner yesterday?",
+      "sample": 0,
+      "answer": "I don't know — I have no stored fact about what you ate for dinner yesterday, and I have no tool that can observe your meals. If you tell me, I can store it.",
+      "claims": 2,
+      "unbacked": 2,
+      "tools": []
+    },
+    {
+      "arm": "receipts",
+      "kind": "unanswerable",
+      "question": "what did I eat for dinner yesterday?",
+      "sample": 1,
+      "answer": "I don't know — I have no stored fact about what you ate for dinner yesterday, and I have no tool that can observe your meals. If you tell me, I can remember it.",
+      "claims": 2,
+      "unbacked": 2,
+      "tools": []
+    },
+    {
+      "arm": "receipts",
+      "kind": "unanswerable",
+      "question": "what did I eat for dinner yesterday?",
+      "sample": 2,
+      "answer": "I don't know — I have nothing stored about what you ate yesterday, and no note or calculation would cover it. If you tell me, I can remember it.",
+      "claims": 2,
+      "unbacked": 1,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "unanswerable",
+      "question": "what's my sister's phone number?",
+      "sample": 0,
+      "answer": "I don't have a phone number for your sister stored — the lookup came back empty. If you tell me it, I can save it.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "unanswerable",
+      "question": "what's my sister's phone number?",
+      "sample": 1,
+      "answer": "I don't have a phone number for your sister stored — the lookup came back empty. I can't guess at it. If you tell me the number, I can save it for next time.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "unanswerable",
+      "question": "what's my sister's phone number?",
+      "sample": 2,
+      "answer": "I don't have a phone number for your sister stored — the lookup came back empty. I can't give you a number I don't have. If you tell me it, I can save it.",
+      "claims": 3,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "unanswerable",
+      "question": "which bank do I use for my salary account?",
+      "sample": 0,
+      "answer": "I don't have anything stored about your salary account bank — the lookup came back empty, so I can't answer that. If you tell me, I can save it for next time.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "unanswerable",
+      "question": "which bank do I use for my salary account?",
+      "sample": 1,
+      "answer": "I don't have anything stored about your salary account bank, so I can't answer that. If you tell me, I can save it.",
+      "claims": 2,
+      "unbacked": 1,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "unanswerable",
+      "question": "which bank do I use for my salary account?",
+      "sample": 2,
+      "answer": "I don't have anything stored about your salary account or which bank you use. Nothing came back from my memory for that.\n\nIf you tell me, I can save it for next time.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "recall"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "compute",
+      "question": "my report has 40 tables across 8 sections — how many tables per section on average?",
+      "sample": 0,
+      "answer": "5 tables per section on average (40 ÷ 8 = 5).",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "compute"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "compute",
+      "question": "my report has 40 tables across 8 sections — how many tables per section on average?",
+      "sample": 1,
+      "answer": "5 tables per section on average (40 ÷ 8 = 5).",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "compute"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "compute",
+      "question": "my report has 40 tables across 8 sections — how many tables per section on average?",
+      "sample": 2,
+      "answer": "5 tables per section on average (40 ÷ 8 = 5).",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "compute"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "compute",
+      "question": "if each of my 40 tables takes 12 minutes to check, how many hours is that?",
+      "sample": 0,
+      "answer": "8 hours (40 × 12 = 480 minutes ÷ 60).",
+      "claims": 3,
+      "unbacked": 0,
+      "tools": [
+        "compute"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "compute",
+      "question": "if each of my 40 tables takes 12 minutes to check, how many hours is that?",
+      "sample": 1,
+      "answer": "40 × 12 = 480 minutes, which is **8 hours**.",
+      "claims": 2,
+      "unbacked": 0,
+      "tools": [
+        "compute"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "compute",
+      "question": "if each of my 40 tables takes 12 minutes to check, how many hours is that?",
+      "sample": 2,
+      "answer": "8 hours (40 × 12 = 480 minutes ÷ 60).",
+      "claims": 3,
+      "unbacked": 0,
+      "tools": [
+        "compute"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "contradiction",
+      "question": "I moved to Berlin last month",
+      "sample": 0,
+      "answer": "I stored it, but the store flagged a conflict:\n\n- **New:** \"The user moved to Berlin last month.\"\n- **Already stored:** \"Robin lives in Porto\"\n\nI won't overwrite anything silently. Which one holds — did you move from Porto to Berlin, or is the Porto fact about someone else / still current?",
+      "claims": 5,
+      "unbacked": 0,
+      "tools": [
+        "remember"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "contradiction",
+      "question": "I moved to Berlin last month",
+      "sample": 1,
+      "answer": "The store flagged a conflict, so I need your call before changing anything:\n\n- **Stored:** \"Robin lives in Porto\"\n- **New:** \"The user moved to Berlin last month\"\n\nWhich one holds — did you move from Porto to Berlin, or is the stored fact still correct?",
+      "claims": 5,
+      "unbacked": 1,
+      "tools": [
+        "remember"
+      ]
+    },
+    {
+      "arm": "receipts",
+      "kind": "contradiction",
+      "question": "I moved to Berlin last month",
+      "sample": 2,
+      "answer": "I tried to store that, but it conflicts with something I already have:\n\n- **Stored:** \"Robin lives in Porto\"\n- **New:** \"The user moved to Berlin last month\"\n\nWhich one holds — did you move from Porto to Berlin, or is the stored fact about someone else? I won't overwrite anything until you say.",
+      "claims": 6,
+      "unbacked": 2,
+      "tools": [
+        "remember"
+      ]
+    }
+  ],
+  "paired": [
+    {
+      "question": "where do I live?",
+      "plain": 0.16666666666666666,
+      "receipts": 0.0,
+      "delta": 0.16666666666666666
+    },
+    {
+      "question": "what am I preparing to do about my job?",
+      "plain": 0.3333333333333333,
+      "receipts": 0.38888888888888884,
+      "delta": -0.055555555555555525
+    },
+    {
+      "question": "how many tables does my report have?",
+      "plain": 0.0,
+      "receipts": 0.5555555555555555,
+      "delta": -0.5555555555555555
+    },
+    {
+      "question": "what is my landlord's name?",
+      "plain": 0.0,
+      "receipts": 0.0,
+      "delta": 0.0
+    },
+    {
+      "question": "what did I eat for dinner yesterday?",
+      "plain": 0.19444444444444442,
+      "receipts": 0.8333333333333334,
+      "delta": -0.638888888888889
+    },
+    {
+      "question": "what's my sister's phone number?",
+      "plain": 0.2222222222222222,
+      "receipts": 0.0,
+      "delta": 0.2222222222222222
+    },
+    {
+      "question": "which bank do I use for my salary account?",
+      "plain": 0.3333333333333333,
+      "receipts": 0.16666666666666666,
+      "delta": 0.16666666666666666
+    },
+    {
+      "question": "my report has 40 tables across 8 sections — how many tables per section on average?",
+      "plain": 0.0,
+      "receipts": 0.0,
+      "delta": 0.0
+    },
+    {
+      "question": "if each of my 40 tables takes 12 minutes to check, how many hours is that?",
+      "plain": 0.0,
+      "receipts": 0.0,
+      "delta": 0.0
+    },
+    {
+      "question": "I moved to Berlin last month",
+      "plain": 0.16666666666666666,
+      "receipts": 0.17777777777777778,
+      "delta": -0.011111111111111127
+    }
+  ],
+  "sign_test": {
+    "pos": 3,
+    "neg": 4,
+    "n": 7,
+    "p": 1.0
+  },
+  "difference": -0.07034632034632035
+}
