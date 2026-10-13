@@ -5,8 +5,24 @@
 > fact carries its source, every claim in an answer carries evidence you can re-run
 > yourself, and *"I don't know"* is a first-class answer instead of a confident guess.
 
-Built for the **Nebius × NVIDIA Global AI Hackathon** (Personal AI track), running on
-**NVIDIA Nemotron** models served by **Nebius Token Factory**.
+Built for the **Nebius × NVIDIA Global AI Hackathon** (Personal AI track). The target stack is
+**NVIDIA Nemotron** served by **Nebius Token Factory** — the client below is written against
+its OpenAI-compatible API.
+
+> **Status, honestly.** Our Nebius account provisioning is blocked: mainland China is not in
+> Nebius's billing country list, so we could not create a billing account or redeem the
+> hackathon credits. The organisers' own FAQ describes this as an account-provisioning gap on
+> Nebius's side, not an eligibility rule, and says there is no workaround. **So the runs
+> recorded in this repository were made against another OpenAI-compatible endpoint** — the
+> client is provider-agnostic by design (`RECEIPTS_BASE_URL`), and switching to Token Factory
+> is a one-line change. Everything else — memory, receipts, the app, the experiment — is
+> independent of which endpoint served the model.
+
+![The app: an answer on the left, its receipts on the right](docs/demo.png)
+
+*A contradiction, live: the store kept both versions, the answer hands the decision back, and
+the self-audit counts the one claim it could not back. The header shows which endpoint served
+the model — here, not Nebius, for the reason above.*
 
 ---
 

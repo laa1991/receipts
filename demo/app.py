@@ -223,6 +223,8 @@ PAGE = """<!doctype html>
 </main>
 <script>
 const esc = s => (s ?? "").replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+// minimal markdown so the answer reads as written (bold + bullets), never as raw markup
+const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/^- (.*)$/gm, '• $1');
 function pill(st){ const cls = st==='verified'?'ok':(st==='stale'?'stale':'unv');
   return `<span class="pill ${cls}">${esc(st)}</span>`; }
 
@@ -233,7 +235,7 @@ async function ask(){
                                  body: JSON.stringify({question:q})});
   const d = await r.json();
   document.getElementById('answer').style.display = 'block';
-  document.getElementById('answer').textContent = d.answer;
+  document.getElementById('answer').innerHTML = md(d.answer);
   document.getElementById('tools').textContent = 'tools: ' + (d.tools.join(' · ') || 'none');
   const c = d.counts;
   document.getElementById('summary').innerHTML =
